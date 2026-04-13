@@ -4,20 +4,27 @@
 <body>
 <div class="d-flex">
     <div th:replace="~{layout :: navbar}"></div>
-    <div class="main-content flex-grow-1" style="margin-left: 220px;">
-        <div class="mb-4">
-            <a href="/ui/employees" class="text-decoration-none text-muted"><i class="bi bi-arrow-left me-1"></i>Back</a>
-            <h4 class="mt-2" th:text="${employee.empid == null} ? 'Add Employee' : 'Edit Employee'"></h4>
+    <div class="main-content flex-grow-1">
+
+        <div class="page-header">
+            <div>
+                <a href="/ui/employees" class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Employees
+                </a>
+                <h4 class="mt-1" th:text="${employee.empid == null} ? 'Add Employee' : 'Edit Employee'"></h4>
+            </div>
         </div>
 
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${error}" class="alert alert-danger mb-3">
+            <i class="bi bi-exclamation-circle-fill me-2"></i><span th:text="${error}"></span>
+        </div>
 
-        <div class="card shadow-sm" style="max-width: 500px;">
-            <div class="card-body">
+        <div class="card" style="max-width:500px">
+            <div class="card-body p-4">
                 <form th:action="${employee.empid == null} ? '/ui/employees/save' : '/ui/employees/update/' + ${employee.empid}"
                       method="post">
                     <div class="mb-3">
-                        <label class="form-label">Emp Code <small class="text-muted">(4 digits)</small></label>
+                        <label class="form-label">Emp Code <small class="text-muted fw-normal">(4 digits)</small></label>
                         <input type="text" name="empCode" class="form-control"
                                maxlength="4" pattern="[0-9]{4}"
                                placeholder="e.g. 1001"
@@ -28,29 +35,44 @@
                         <input type="password" name="password" class="form-control" placeholder="Set initial password"/>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="emp_name" class="form-control" th:value="${employee.emp_name}"/>
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="emp_name" class="form-control"
+                               placeholder="Employee full name"
+                               th:value="${employee.emp_name}"/>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Age</label>
-                        <input type="number" name="emp_age" class="form-control" th:value="${employee.emp_age}"/>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Age</label>
+                            <input type="number" name="emp_age" class="form-control"
+                                   placeholder="Age"
+                                   th:value="${employee.emp_age}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">City</label>
+                            <input type="text" name="emp_city" class="form-control"
+                                   placeholder="City"
+                                   th:value="${employee.emp_city}"/>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">City</label>
-                        <input type="text" name="emp_city" class="form-control" th:value="${employee.emp_city}"/>
-                    </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Salary</label>
-                        <input type="number" step="0.01" name="emp_salary" class="form-control" th:value="${employee.emp_salary}"/>
+                        <div class="input-group">
+                            <span class="input-group-text" style="background:#f8fafc;border-color:#e2e8f0;font-size:0.9rem">₹</span>
+                            <input type="number" step="0.01" name="emp_salary" class="form-control"
+                                   placeholder="0.00"
+                                   th:value="${employee.emp_salary}"/>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">
-                        <span th:text="${employee.empid == null} ? 'Create' : 'Update'"></span>
+                        <i class="bi bi-check-circle me-1"></i>
+                        <span th:text="${employee.empid == null} ? 'Create Employee' : 'Update Employee'"></span>
                     </button>
                 </form>
             </div>
         </div>
+
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
