@@ -1,17 +1,19 @@
-# Step 1: Build JAR
+# Build stage
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-COPY EmployeeApiCrud /app
+COPY EmployeeApiCrud /app/EmployeeApiCrud
+
+WORKDIR /app/EmployeeApiCrud
 
 RUN mvn clean package -DskipTests
 
-# Step 2: Run app
+# Run stage
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/EmployeeApiCrud/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
