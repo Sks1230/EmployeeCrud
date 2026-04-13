@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Places')}"></head>
+<body>
+<div class="d-flex">
+    <div th:replace="~{layout :: navbar}"></div>
+    <div class="main-content flex-grow-1" style="margin-left: 220px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>Places</h4>
+            <a href="/ui/places/new" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Place</a>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Place</th>
+                            <th>Created By</th>
+                            <th>Attachment</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${#lists.isEmpty(places)}">
+                            <td colspan="6" class="text-center text-muted py-4">No places found</td>
+                        </tr>
+                        <tr th:each="place : ${places}">
+                            <td th:text="${place.id}"></td>
+                            <td th:text="${place.place}"></td>
+                            <td th:text="${place.createdBy}"></td>
+                            <td>
+                                <a th:if="${place.attachment != null}"
+                                   th:href="@{'/' + ${place.attachment}}"
+                                   target="_blank"
+                                   class="badge bg-success text-decoration-none">
+                                    <i class="bi bi-paperclip"></i> View File
+                                </a>
+                                <span th:if="${place.attachment == null}" class="text-muted">—</span>
+                            </td>
+                            <td th:text="${#dates.format(place.createdDate, 'dd-MM-yyyy')}"></td>
+                            <td>
+                                <a th:href="@{/ui/places/edit/{id}(id=${place.id})}" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/ui/places/delete/{id}(id=${place.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Delete this place?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
